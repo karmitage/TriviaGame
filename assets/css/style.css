@@ -1,0 +1,23 @@
+.container {
+    max-width: 960px;
+    background-color: #f4f3e6;
+    height: 700px;
+    width: 900px;
+    text-align: center;
+    margin-top: 10px;
+    border-top: 10px;
+    padding-top: 10px;
+  }
+
+.row {
+    background-color: #F6B9B9;
+    height: 85px;
+    width: 500px;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 10px;
+    border-top: 10px;
+    padding-top: 10px;
+    border: solid 2px;
+    border-color: white; 
+}
