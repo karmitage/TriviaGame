@@ -24,16 +24,15 @@ $(document).ready(function () {
     var incorrect = 0;
     var unanswered = 0;
 
-    console.log(trivia.secondRound.answer);
 
     //setting up divs to contain info
     var timerDiv = $("<div class='countdown'><h3></h3></div>");
     var questionDiv = $("<div class='question'><h3></h3></div>");
-    var answerDiv = $("<div class='answers'></div>");
-    var rightDiv = $("<div class='rightAns'></div>");
+    var choicesDiv = $("<div class='choices'></div>");
+    var answerDiv = $("<div class='rightAns'></div>");
 
     //timer
-    var counter = setInterval(count, 500);
+    var counter = setInterval(count, 30000);
 
     //this set of variables allows the game to iterate over the question object to display questions in order
     var index = Object.keys(questions);
@@ -43,37 +42,32 @@ $(document).ready(function () {
 
 
     //function with reset and game setup
-    function gameSetup() {
-        $(".start").css("display", "none");
-
-        var correct = 0;
-        var incorrect = 0;
-        var timeout = 0;
-        n = 0;
-        key = keys[n];
-
-        var gameReset = function () {
-            time = 30;
-            $(".rightAns").empty();
-            $(".rightAns").remove();
-            $(".main").append(timerDiv);
-            $(".countdown h3").html("Time remaining: " + time);
-            $(".main").append(questionDiv);
-            $(".main").append(answerDiv);
-        }
-
-        reset();
+       whatisit = $(".start").css("display", "none");
+        console.log("gamecss: " + whatisit);
 
 
+ 
 
+    var reset = function() {
+        time = 30;
+        $(".answerDiv").empty(); //clear the answer div (since we will be writing to it again)
+        $(".answerDiv").remove(); //remove the answer div
+        $(".main").append(timerDiv);
+        $(".countdown h3").html("TIME REMAINING: " + time); //displays the timer
+        $(".main").append(questionDiv); //append the question div
+        $(".main").append(choicesDiv); //append the choices div
+    }
 
-        //object keys to return questions in order
-        var keys = Object.keys(questions);
-        var key = keys[n];
-        var time = 30;
-        var n = 0;
-
-
+       // the start button and the start over button should have an on click function
+       //when clicked, the game is reset
+       //current index becomes 0
+       //all score variables are 0
+       //timer = 30 seconds
+       //the divs containing the questions are appended
+       //the questions then have an on click function
+       //when the question is clicked:
+       // remove the question divs
+       //if the question === the answer, display a message telling the user 
 
         //* logic
 
@@ -106,10 +100,5 @@ $(document).ready(function () {
         //settimer
 
         //
-
-
-
-
-
 
     });
