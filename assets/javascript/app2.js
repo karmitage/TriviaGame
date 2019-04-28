@@ -27,9 +27,10 @@ $(document).ready(function () {
 
     //variables to iterate over the questions
     var keys = Object.keys(trivia);
+    var currentIndex = 0;
     var currentRound = keys[currentIndex];
     var time = 30;
-    var currentIndex = 0;
+
 
     //setting up divs to contain info
     var timerDiv = $("<div class='countdown'><h3></h3></div>");
@@ -40,10 +41,14 @@ $(document).ready(function () {
     //this function resets the timer and modifies divs
     function reset() {
         timer = 30;
-        $(".answer").empty(); //empty answer div 
-        $(".answer").remove(); //remove answer div
-        $(".countdown").empty();
-        $(".countdown").remove();
+        $(answerDiv).empty(); //empty answer div 
+        $(answerDiv).remove(); //remove answer div
+        $(timerDiv).empty();
+        $(timerDiv).remove();
+        $(questionDiv).empty();
+        $(questionDiv).remove();
+        $(choicesDiv).empty();
+        $(choicesDiv).remove();
         $(".main").append(timerDiv); //append timer
         $(".countdown").append("Time remaining: " + time); //add timer message
         $(".main").append(questionDiv); //append the question div
@@ -51,8 +56,11 @@ $(document).ready(function () {
     }
 
     function displayQuestion() {
+        console.log("enter display function");
+        //call reset function to set up question
+        reset();
         //display the question in the question div
-        $(".question h3").html(trivia[currentRound].question);
+        $(questionDiv).html("<h3>" + trivia[currentRound].question + "</h3>");
         console.log(trivia[currentRound].question);
         console.log(trivia[currentRound].answer);
 
@@ -86,8 +94,10 @@ $(document).ready(function () {
                 //append the div that will contain the result
                 $(".main").append(answerDiv);
                 $(".answer").text("Correct!");
-                //increment the correct value
+                //increment variables and update the index
                 correct++;
+                currentIndex++;
+                currentRound = keys[currentIndex];
                 console.log("correct: " + correct);
             }
             else {
@@ -103,12 +113,29 @@ $(document).ready(function () {
                 $(".main").append(answerDiv);
                 $(".answer").text("Incorrect. The correct answer is: " + trivia[currentRound].answer);
                 incorrect++;
+                currentIndex++;
+                currentRound = keys[currentIndex];
                 console.log("incorrect: " + incorrect);
             }
+            //set timeout for three seconds before moving on to the next question
+            if (currentIndex >= Object.keys(trivia).length) {
+                $(timerDiv).remove();
+                $(questionDiv).remove();
+                $(choicesDiv).remove();
+                $(".choices p").remove();
+                $(answerDiv).empty();
+                $(answerDiv).text("Game over! You got " + correct + " correct answers & " + incorrect + " incorrect answers");
+                $(".start").show();
+            } else {
+                setTimeout(displayQuestion, 3000);
+            }
+
+
         });
     }
     function startGame() {
         //hide the start button
+        console.log("start game");
         $(".start").hide();
         //clear variables
         correct = 0;
@@ -119,39 +146,42 @@ $(document).ready(function () {
         console.log("on start the currentRound is: " + currentRound);
         console.log("at first currentIndex is: " + currentIndex);
         //call the reset function & add new divs
-        reset();
+
         //call the display question function, which will display a question &
         //multiple choice answers, as well as the result of each user response
-        displayQuestion();
+        // displayQuestion();
         console.log("sasdjf;lasdjf;asldjkf")
         //increment array position and reset the value
-        // n++;
-        // key = keys[n];
+
         //if the user has reached the last question, display the end
         //screen with the option to start over
 
         console.log("trivia length is: " + Object.keys(trivia).length);
         console.log("index is: " + currentIndex);
+        console.log("current round is: " + currentRound);
 
-        if (currentIndex >= Object.keys(trivia).length) {
-            $(answerDiv).empty();
-            $(answerDiv).text("Game over! You got " + correct + "right answers & " + incorrect + " incorrect answers");
-            $(".start").show();
-        }
-        //if the user hasn't reached the end of the questions, increment index and display 
-        //another question
-        else {
-            currentIndex++;
-            currentRound = keys[currentIndex];
-            console.log("what is going on")
-            console.log(currentIndex);
-            console.log("break");
-            console.log(currentRound);
-            reset();
-            displayQuestion();
+        displayQuestion();
 
-        }
+        //loop over the trivia object
+        // for (var i = 0; i < Object.keys(trivia).length; i++) {
+        //     console.log("entered loop");
+        //     displayQuestion();
+        //     currentIndex++;
+        //     currentRound = keys[currentIndex];
+        //     if (currentRound === null) {
+        //         $(timerDiv).remove();
+        //         $(questionDiv).remove();
+        //         $(choicesDiv).remove();
+        //         $(".choices p").remove();
+        //         $(answerDiv).empty();
+        //         $(answerDiv).text("Game over! You got " + correct + "right answers & " + incorrect + " incorrect answers");
+        //         $(".start").show();
+        //     }
+        // }
+
+
     }
+
     //event listener
-    $(".start").on("click", startGame());
+    $(".start").on("click", startGame);
 });
